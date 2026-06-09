@@ -24,238 +24,172 @@ body{
   overflow-x:hidden;
 }
 
-/* ─── PAGE NAV (ID selector — n'affecte pas le menu interne) ─── */
+/* ─── NAV ─── */
 #nav{
   position:fixed;top:0;left:0;right:0;z-index:300;
-  height:72px;
+  height:80px;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 52px;
-  transition:background .5s,border-color .5s;
+  transition:background .45s, border-color .45s;
   border-bottom:.5px solid transparent;
+  background:transparent;
 }
 #nav.scrolled{
   background:rgba(250,250,248,.97);
   backdrop-filter:blur(12px);
   border-color:var(--ln);
 }
+
+/* logo nav (caché sur hero, visible sur éditos + scroll) */
 .nav-logo{
   opacity:0;
   transition:opacity .4s ease;
   line-height:0;
 }
 .nav-logo.visible{opacity:1}
-.nav-logo img{height:26px;width:auto}
+.nav-logo img{height:26px;width:auto;transition:filter .45s}
+#nav.on-dark:not(.scrolled) .nav-logo img{filter:brightness(0) invert(1)}
+#nav.scrolled .nav-logo img{filter:none}
 
-/* burger */
-.burger{
-  width:32px;height:20px;
-  display:flex;flex-direction:column;justify-content:space-between;
-  cursor:pointer;position:relative;z-index:10;
-}
-.burger span{
-  display:block;height:.5px;background:var(--dk);
-  transform-origin:center center;
-  transition:transform .55s cubic-bezier(.76,0,.24,1),
-             opacity .3s ease, width .4s ease;
-}
-.burger span:nth-child(1){width:32px}
-.burger span:nth-child(2){width:22px;align-self:flex-end}
-.burger span:nth-child(3){width:32px}
-.burger.open span:nth-child(1){transform:translateY(9.75px) rotate(45deg);width:32px}
-.burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-.burger.open span:nth-child(3){transform:translateY(-9.75px) rotate(-45deg);width:32px}
-#nav.menu-open .burger span{background:#FAFAF8}
-#nav.menu-open{background:transparent!important;border-color:transparent!important}
-
-/* ─── MENU OVERLAY ─── */
-.menu-overlay{
-  position:fixed;inset:0;
-  background:#0C0C0B;
-  z-index:200;
-  transform:translateY(-100%);
-  transition:transform .72s cubic-bezier(.76,0,.24,1);
-}
-.menu-overlay.open{transform:translateY(0)}
-
-/* Top bar */
-.menu-top{
-  position:absolute;top:0;left:0;right:0;height:72px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 60px;
-  border-bottom:.5px solid rgba(250,250,248,.07);
-}
-.menu-brand-lbl{
-  font-size:9px;letter-spacing:.32em;text-transform:uppercase;
-  color:rgba(250,250,248,.3);
-}
-.menu-top-right{
-  font-size:9px;letter-spacing:.32em;text-transform:uppercase;
-  color:rgba(250,250,248,.2);
-}
-
-/* Main content area */
-.menu-main{
-  position:absolute;top:72px;bottom:56px;left:0;right:0;
-  display:grid;grid-template-columns:1fr 1fr;
-}
-
-/* ─── CATEGORIES (left column) ─── */
-.menu-cats{
-  list-style:none;
-  padding:44px 60px;
-  display:flex;flex-direction:column;justify-content:center;
-  border-right:.5px solid rgba(250,250,248,.06);
-  overflow:hidden;
-}
-.menu-cat{
-  border-top:.5px solid rgba(250,250,248,.07);
-  padding:10px 0;
-  cursor:pointer;
-  /* entry animation */
-  opacity:0;
-  transform:translateX(-20px);
-  transition:opacity .45s ease, transform .45s cubic-bezier(.25,.46,.45,.94);
-}
-.menu-cat:last-child{border-bottom:.5px solid rgba(250,250,248,.07)}
-/* stagger */
-.menu-overlay.open .menu-cat:nth-child(1){opacity:1;transform:none;transition-delay:.22s}
-.menu-overlay.open .menu-cat:nth-child(2){opacity:1;transform:none;transition-delay:.28s}
-.menu-overlay.open .menu-cat:nth-child(3){opacity:1;transform:none;transition-delay:.34s}
-.menu-overlay.open .menu-cat:nth-child(4){opacity:1;transform:none;transition-delay:.40s}
-.menu-overlay.open .menu-cat:nth-child(5){opacity:1;transform:none;transition-delay:.46s}
-.menu-overlay.open .menu-cat:nth-child(6){opacity:1;transform:none;transition-delay:.52s}
-.menu-overlay.open .menu-cat:nth-child(7){opacity:1;transform:none;transition-delay:.58s}
-.menu-overlay.open .menu-cat:nth-child(8){opacity:1;transform:none;transition-delay:.64s}
-
-.cat-row{
-  display:flex;align-items:baseline;gap:0;
-}
-.cat-num{
-  font-size:9px;letter-spacing:.15em;
-  color:rgba(250,250,248,.18);
-  width:30px;flex-shrink:0;
-  transition:color .25s;
-}
-.cat-name{
+/* liens nav */
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-link{
+  background:none;border:none;cursor:pointer;padding:0;
   font-family:Arial,Helvetica,sans-serif;
-  font-weight:400;
-  font-size:clamp(18px,2.2vw,32px);
-  line-height:1;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:rgba(250,250,248,.32);
-  transition:color .3s ease, transform .35s cubic-bezier(.25,.46,.45,.94);
-  display:block;
+  font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(12,12,11,.82);
+  text-decoration:none;
+  transition:color .45s, text-shadow .45s;
 }
-.menu-cat:hover .cat-name,
-.menu-cat.is-active .cat-name{
-  color:#FAFAF8;
-  transform:translateX(10px);
+/* hero (fond clair) → texte sombre sans ombre */
+#nav:not(.scrolled):not(.on-dark) .nav-link{
+  color:rgba(12,12,11,.82);
+  text-shadow:none;
 }
-.menu-cat:hover .cat-num,
-.menu-cat.is-active .cat-num{
-  color:rgba(250,250,248,.45);
+/* panels sombres → texte blanc + halo */
+#nav.on-dark:not(.scrolled) .nav-link{
+  color:rgba(250,250,248,.95);
+  text-shadow:0 1px 8px rgba(12,12,11,.55), 0 0 2px rgba(12,12,11,.4);
 }
+#nav.scrolled .nav-link{color:rgba(12,12,11,.82);text-shadow:none}
 
-/* ─── SUB-SECTION (right column) ─── */
-.menu-sub{
-  position:relative;
-  overflow:hidden;
-}
-.menu-sub-img{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;object-position:center 20%;
-  opacity:.13;
-  filter:grayscale(100%) contrast(1.1);
-  transform:scale(1.04);
-  transition:transform 1.2s ease;
-}
-.menu-overlay.open .menu-sub-img{transform:scale(1)}
-.menu-sub-vig{
-  position:absolute;inset:0;
-  background:linear-gradient(to right, #0C0C0B 0%, rgba(12,12,11,.45) 60%, transparent 100%);
-}
-/* individual panels */
-.sub-panel{
-  position:absolute;inset:0;
-  padding:48px 64px;
-  display:flex;flex-direction:column;justify-content:center;
-  z-index:1;
+/* ─── MEGA MENU ─── */
+#megaMenu{
+  position:fixed;
+  top:80px;left:0;right:0;
+  max-height:calc(100vh - 80px);
+  overflow-y:auto;
+  background:rgba(250,250,248,.98);
+  backdrop-filter:blur(16px);
+  border-bottom:.5px solid rgba(12,12,11,.12);
+  box-shadow:0 12px 40px rgba(12,12,11,.06);
+  padding:40px 64px 52px;
   opacity:0;
-  transform:translateX(16px);
-  transition:opacity .3s ease, transform .35s cubic-bezier(.25,.46,.45,.94);
+  visibility:hidden;
+  transform:translateY(-8px);
+  transition:opacity .28s ease, visibility .28s ease, transform .28s ease;
+  z-index:299;
   pointer-events:none;
 }
-.sub-panel.is-active{
+#megaMenu.open{
   opacity:1;
-  transform:none;
+  visibility:visible;
+  transform:translateY(0);
   pointer-events:auto;
 }
-.sub-title{
-  font-family:Arial,Helvetica,sans-serif;
-  font-weight:700;
-  font-size:clamp(48px,7vw,100px);
-  line-height:.9;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:rgba(250,250,248,.06);
-  margin-bottom:48px;
+
+.mega-header{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:32px;
 }
-.sub-seasons{
-  list-style:none;
-  display:flex;flex-direction:column;gap:18px;
+.mega-label{
+  font-size:7px;letter-spacing:.55em;text-transform:uppercase;
+  color:rgba(12,12,11,.3);
 }
-.sub-season{
-  display:flex;align-items:center;gap:16px;
-}
-.sub-season::before{
-  content:'';display:block;
-  width:24px;height:.5px;
-  background:rgba(250,250,248,.3);
-  flex-shrink:0;
-  transition:width .3s;
-}
-.sub-season:hover::before{width:36px}
-.sub-season-lnk{
-  font-size:10px;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(250,250,248,.45);
-  text-decoration:none;
+.mega-all{
+  font-size:8px;letter-spacing:.44em;text-transform:uppercase;
+  color:rgba(12,12,11,.4);text-decoration:none;
   transition:color .2s;
 }
-.sub-season-lnk:hover{color:#FAFAF8}
-.sub-women{
-  margin-top:40px;
-  font-size:8px;letter-spacing:.36em;text-transform:uppercase;
-  color:rgba(250,250,248,.18);
-}
+.mega-all:hover{color:var(--dk)}
 
-/* Bottom bar */
-.menu-bottom{
-  position:absolute;bottom:0;left:0;right:0;height:56px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 60px;
-  border-top:.5px solid rgba(250,250,248,.06);
+.mega-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0 28px;
 }
-.menu-bottom-copy{
-  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(250,250,248,.18);
-}
-.menu-bottom-links{display:flex;gap:28px}
-.menu-bottom-lnk{
-  font-size:9px;letter-spacing:.26em;text-transform:uppercase;
-  color:rgba(250,250,248,.26);
+.mega-grid + .mega-grid{margin-top:32px}
+
+/* colonne catégorie */
+.cat-col{
   text-decoration:none;
-  transition:color .2s;
+  display:flex;flex-direction:column;
 }
-.menu-bottom-lnk:hover{color:rgba(250,250,248,.7)}
-
-/* ─── HERO ─── */
-.hero{
+.cat-img-wrap{
   position:relative;
-  height:100vh;min-height:680px;
-  overflow:hidden;background:#D8D5D0;
+  aspect-ratio:3/4;
+  overflow:hidden;
+  background:#E8E6E2;
 }
+.cat-img-wrap img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
+  transition:transform .6s cubic-bezier(.25,.46,.45,.94), opacity .35s;
+  transform:scale(1);
+  opacity:.82;
+}
+.cat-col:hover .cat-img-wrap img{transform:scale(1.04);opacity:1}
+.cat-label-row{
+  display:flex;align-items:center;gap:8px;
+  padding:14px 0 8px;
+  border-top:.5px solid rgba(12,12,11,.12);
+  margin-top:12px;
+}
+.cat-label-line{
+  width:0;height:.5px;
+  background:var(--dk);
+  transition:width .3s;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.cat-col:hover .cat-label-line{width:16px}
+.cat-label-text{
+  font-size:9px;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--dk);
+  opacity:.5;
+  transition:opacity .3s;
+}
+.cat-col:hover .cat-label-text{opacity:1}
+
+/* ─── PANELS SCROLL-JACKING ─── */
+.panel{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:100vh;
+  overflow:hidden;
+}
+
+.scroll-hint{
+  position:absolute;bottom:48px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  z-index:10;pointer-events:none;
+}
+.scroll-hint-lbl{
+  font-size:7px;letter-spacing:.55em;text-transform:uppercase;
+  color:rgba(250,250,248,.3);
+}
+.scroll-hint-line{width:.5px;height:40px;background:rgba(250,250,248,.2)}
+
+.section-num{
+  position:absolute;top:40px;right:52px;
+  font-size:7px;letter-spacing:.55em;text-transform:uppercase;
+  color:rgba(250,250,248,.2);z-index:10;
+}
+
+/* ─── PANEL 0 : HERO ─── */
+#panel-hero{z-index:1}
 .hero-img{
   position:absolute;inset:0;
   width:100%;height:100%;
@@ -268,434 +202,341 @@ body{
 }
 .hero-logo-big{
   width:clamp(170px,20vw,300px);
-  height:auto;display:block;
-  margin-bottom:52px;
-  transition:opacity .35s ease;
+  height:auto;display:block;margin-bottom:52px;
 }
 .hero-meta{display:flex;flex-direction:column;gap:12px}
-.hero-season{
-  font-size:9px;letter-spacing:.38em;text-transform:uppercase;
-  color:rgba(12,12,11,.38);
-}
+.hero-season{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(12,12,11,.38)}
 .hero-rule{width:28px;height:.5px;background:rgba(12,12,11,.18);margin:8px 0}
-.hero-sub{
-  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(12,12,11,.28);
-}
+.hero-sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(12,12,11,.28)}
 
-/* ─── SÉPARATEUR ─── */
-.sep{
-  display:flex;align-items:center;gap:28px;
-  padding:0 60px;
-  height:80px;
+/* ─── PANEL 1 : ÉDITO 1 ─── */
+#panel-edito1{z-index:2;transform:translateY(100%);will-change:transform}
+.edito1-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center bottom;
 }
-.sep-line{flex:1;height:.5px;background:var(--ln)}
-.sep-label{
-  font-size:8px;letter-spacing:.44em;text-transform:uppercase;
-  color:rgba(12,12,11,.22);white-space:nowrap;
-}
-
-/* ─── ÉDITORIAL 1 — FULL COVER ─── */
-.ed-full{
-  position:relative;
-  width:100%;
-  overflow:hidden;
-}
-.ed-full-img{
-  display:block;
-  width:100%;height:auto;
-}
-.ed-full-vig{
+.edito1-vig{
   position:absolute;inset:0;
-  background:linear-gradient(to top, rgba(12,12,11,.52) 0%, rgba(12,12,11,.08) 40%, transparent 65%);
+  background:linear-gradient(to top, rgba(12,12,11,.65) 0%, rgba(12,12,11,.06) 45%, transparent 65%);
 }
-.ed-full-caption{
+.edito1-caption{
   position:absolute;bottom:0;left:0;right:0;
-  padding:48px 64px;
+  padding:52px 64px;
   display:flex;align-items:flex-end;justify-content:space-between;
+  z-index:2;
 }
-.ed-full-quote{
-  font-family:Arial,Helvetica,sans-serif;
-  font-weight:400;
-  font-size:clamp(18px,2.1vw,30px);
-  line-height:1.3;letter-spacing:.13em;
+.edito1-quote{
+  font-size:clamp(18px,2.2vw,34px);
+  line-height:1.15;letter-spacing:.13em;
   text-transform:uppercase;
-  color:rgba(250,250,248,.88);
+  color:rgba(250,250,248,.92);
 }
-.ed-full-kicker{
-  font-size:8px;letter-spacing:.4em;text-transform:uppercase;
-  color:rgba(250,250,248,.38);
-  text-align:right;display:flex;flex-direction:column;gap:9px;
+.edito1-quote::before{
+  content:'';display:block;
+  width:24px;height:.5px;
+  background:rgba(250,250,248,.4);margin-bottom:20px;
+}
+.edito1-kicker{
+  font-size:8px;letter-spacing:.44em;text-transform:uppercase;
+  color:rgba(250,250,248,.35);
+  text-align:right;flex-shrink:0;margin-left:52px;
+  display:flex;flex-direction:column;gap:9px;
 }
 
-/* ─── ÉDITORIAL 2 — AVANT FOOTER ─── */
-.ed-bottom{margin-top:0}
-.ed-bottom-img-wrap{overflow:hidden}
-.ed-bottom-img{
-  display:block;
-  width:100%;height:auto;
+/* ─── PANEL 2 : ÉDITO 2 ─── */
+#panel-edito2{z-index:3;transform:translateY(100%);will-change:transform}
+.edito2-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
 }
-.ed-bottom-img-wrap:hover .ed-bottom-img{transform:scale(1.02);transition:transform 2s cubic-bezier(.25,.46,.45,.94)}
-.ed-bottom-caption{
+.edito2-vig{
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(12,12,11,.55) 0%, transparent 50%);
+}
+.edito2-bar{position:absolute;bottom:0;left:0;right:0;z-index:2}
+.edito2-bar-line{width:100%;height:.5px;background:rgba(250,250,248,.12)}
+.edito2-caption{
   display:flex;align-items:baseline;justify-content:space-between;
-  padding:30px 60px;border-bottom:.5px solid var(--ln);
+  padding:22px 64px;
+  background:rgba(12,12,11,.42);backdrop-filter:blur(10px);
 }
-.ed-bottom-title{
-  font-family:Arial,Helvetica,sans-serif;
-  font-weight:400;
-  font-size:clamp(14px,1.4vw,20px);
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--dk);
+.edito2-title{font-size:clamp(12px,1.2vw,17px);letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.88)}
+.edito2-meta{font-size:8px;letter-spacing:.44em;text-transform:uppercase;color:rgba(250,250,248,.35);flex-shrink:0;margin-left:32px}
+
+/* ─── CONTENU NORMAL ─── */
+.site-content{position:relative;z-index:10;background:var(--bg);margin-top:100vh}
+
+.cta-block{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:120px 64px;border-top:.5px solid var(--ln);
 }
-.ed-bottom-meta{
-  font-size:9px;letter-spacing:.32em;text-transform:uppercase;
-  color:rgba(12,12,11,.3);
+.cta-rule{width:24px;height:.5px;background:var(--dk);opacity:.3;margin-bottom:28px}
+.cta-title{font-size:clamp(20px,2.8vw,42px);font-weight:400;letter-spacing:.12em;text-transform:uppercase;line-height:1.1}
+.cta-btn{
+  display:inline-block;padding:18px 40px;
+  border:.5px solid var(--dk);
+  font-size:9px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--dk);text-decoration:none;flex-shrink:0;
+  transition:background .25s,color .25s;
 }
+.cta-btn:hover{background:var(--dk);color:var(--bg)}
 
 /* ─── FOOTER ─── */
 footer{
   padding:52px 60px 44px;
   display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  border-top:.5px solid var(--ln);
 }
-.footer-left{
-  font-size:9px;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(12,12,11,.28);
-}
+.footer-left{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:rgba(12,12,11,.28)}
 .footer-logo img{height:20px;width:auto;display:block}
 .footer-right{display:flex;justify-content:flex-end;gap:28px}
-.footer-link{
-  font-size:9px;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(12,12,11,.28);text-decoration:none;transition:color .2s;
-}
+.footer-link{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:rgba(12,12,11,.28);text-decoration:none;transition:color .2s}
 .footer-link:hover{color:var(--dk)}
-em.sovr{
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-style:italic;
-  font-weight:400;
-  font-size:1.15em;
-  letter-spacing:.04em;
-  text-transform:none;
-}
-em.sovr a{
-  color:inherit;
-  text-decoration:none;
-  border-bottom:.5px solid currentColor;
-  transition:opacity .2s;
-}
+em.sovr{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:400;font-size:1.15em;letter-spacing:.04em;text-transform:none}
+em.sovr a{color:inherit;text-decoration:none;border-bottom:.5px solid currentColor;transition:opacity .2s}
 em.sovr a:hover{opacity:.6}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px){
+  #megaMenu{padding:32px 28px 40px}
+  .mega-grid{gap:0 14px}
+}
+@media(max-width:768px){
+  #nav{padding:0 28px}
+  .nav-links{display:none}
+  .hero-left{width:100%;padding:0 28px 56px;justify-content:flex-end}
+  .edito1-caption{padding:32px 28px}
+  .edito2-caption{padding:18px 28px}
+  .cta-block{padding:72px 28px;flex-direction:column;gap:36px;align-items:flex-start}
+  footer{padding:40px 28px;grid-template-columns:1fr;gap:20px}
+  .scroll-hint{display:none}
+  .section-num{display:none}
+}
 </style>
 </head>
 <body>
 
-<!-- ─── PAGE NAV ─── -->
+<!-- ─── NAV ─── -->
 <nav id="nav">
   <a class="nav-logo" href="#" id="navLogoWrap">
     <img src="logo.svg" alt="Lucie Neouze">
   </a>
-  <div class="burger" id="burger" role="button" aria-label="Menu" tabindex="0">
-    <span></span><span></span><span></span>
+  <div class="nav-links">
+    <button class="nav-link" id="navCollection"
+      onmouseenter="openMega()" onmouseleave="closeMegaDelay()">Collection</button>
+    <a class="nav-link" href="#">Instagram</a>
+    <a class="nav-link" href="#">Contact</a>
   </div>
 </nav>
 
-<!-- ─── MENU OVERLAY ─── -->
-<div class="menu-overlay" id="menuOverlay" aria-hidden="true">
-
-  <!-- barre haute -->
-  <div class="menu-top">
-    <div class="menu-brand-lbl">Lucie Neouze</div>
-    <div class="menu-top-right">SS — 27 &nbsp;/&nbsp; Paris</div>
+<!-- ─── MEGA MENU ─── -->
+<div id="megaMenu"
+  onmouseenter="openMega()" onmouseleave="closeMegaDelay()"
+  onwheel="event.stopPropagation()">
+  <div class="mega-header">
+    <span class="mega-label">Collection — SS 27</span>
+    <a href="#" class="mega-all">Voir tout →</a>
   </div>
-
-  <!-- zone principale : catégories | sous-section -->
-  <div class="menu-main">
-
-    <!-- colonne gauche : catégories -->
-    <ul class="menu-cats" id="menuCats">
-      <li class="menu-cat" data-idx="0">
-        <div class="cat-row">
-          <span class="cat-num">01</span>
-          <span class="cat-name">Dress</span>
-        </div>
-      </li>
-      <li class="menu-cat" data-idx="1">
-        <div class="cat-row">
-          <span class="cat-num">02</span>
-          <span class="cat-name">Coat</span>
-        </div>
-      </li>
-      <li class="menu-cat" data-idx="2">
-        <div class="cat-row">
-          <span class="cat-num">03</span>
-          <span class="cat-name">Jacket</span>
-        </div>
-      </li>
-      <li class="menu-cat" data-idx="3">
-        <div class="cat-row">
-          <span class="cat-num">04</span>
-          <span class="cat-name">Blouse</span>
-        </div>
-      </li>
-      <li class="menu-cat" data-idx="4">
-        <div class="cat-row">
-          <span class="cat-num">05</span>
-          <span class="cat-name">Tops</span>
-        </div>
-      </li>
-      <li class="menu-cat" data-idx="5">
-        <div class="cat-row">
-          <span class="cat-num">06</span>
-          <span class="cat-name">Skirt</span>
-        </div>
-      </li>
-      <li class="menu-cat" data-idx="6">
-        <div class="cat-row">
-          <span class="cat-num">07</span>
-          <span class="cat-name">Pants</span>
-        </div>
-      </li>
-      <li class="menu-cat" data-idx="7">
-        <div class="cat-row">
-          <span class="cat-num">08</span>
-          <span class="cat-name">Shorts</span>
-        </div>
-      </li>
-    </ul>
-
-    <!-- colonne droite : sous-sections -->
-    <div class="menu-sub" id="menuSub">
-      <img class="menu-sub-img" src="images/editorial4.jpg" alt="">
-      <div class="menu-sub-vig"></div>
-
-      <div class="sub-panel" data-idx="0">
-        <div class="sub-title">Dress</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-
-      <div class="sub-panel" data-idx="1">
-        <div class="sub-title">Coat</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-
-      <div class="sub-panel" data-idx="2">
-        <div class="sub-title">Jacket</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-
-      <div class="sub-panel" data-idx="3">
-        <div class="sub-title">Blouse</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-
-      <div class="sub-panel" data-idx="4">
-        <div class="sub-title">Tops</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-
-      <div class="sub-panel" data-idx="5">
-        <div class="sub-title">Skirt</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-
-      <div class="sub-panel" data-idx="6">
-        <div class="sub-title">Pants</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-
-      <div class="sub-panel" data-idx="7">
-        <div class="sub-title">Shorts</div>
-        <ul class="sub-seasons">
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 27</a></li>
-          <li class="sub-season"><a class="sub-season-lnk" href="#">SS 26</a></li>
-        </ul>
-        <div class="sub-women">Women — Paris</div>
-      </div>
-    </div>
+  <div class="mega-grid">
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-01.jpg" alt="Robes"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Robes</span></div>
+    </a>
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-02.jpg" alt="Manteaux"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Manteaux</span></div>
+    </a>
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-03.jpg" alt="Vestes"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Vestes</span></div>
+    </a>
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-04.jpg" alt="Blouses"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Blouses</span></div>
+    </a>
   </div>
-
-  <!-- barre basse -->
-  <div class="menu-bottom">
-    <div class="menu-bottom-copy">© 2027 Lucie Neouze — Tous droits réservés &nbsp;<em class="sovr"><a href="https://sovr.fr" target="_blank" rel="noopener">powered by SOVR.FR</a></em></div>
-    <div class="menu-bottom-links">
-      <a class="menu-bottom-lnk" href="#">Instagram</a>
-      <a class="menu-bottom-lnk" href="#">Showroom</a>
-      <a class="menu-bottom-lnk" href="#">Contact</a>
-    </div>
+  <div class="mega-grid">
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-05.jpg" alt="Hauts"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Hauts</span></div>
+    </a>
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-06.jpg" alt="Jupes"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Jupes</span></div>
+    </a>
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-07.jpg" alt="Pantalons"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Pantalons</span></div>
+    </a>
+    <a href="#" class="cat-col">
+      <div class="cat-img-wrap"><img src="images/look-08.jpg" alt="Shorts"></div>
+      <div class="cat-label-row"><div class="cat-label-line"></div><span class="cat-label-text">Shorts</span></div>
+    </a>
   </div>
+</div>
 
-</div><!-- /menu-overlay -->
-
-<!-- ─── HERO ─── -->
-<section class="hero">
-  <img class="hero-img" src="images/hero.jpg" alt="Lucie Neouze SS 27 — Womenswear">
+<!-- ─── PANEL 0 : HERO ─── -->
+<div class="panel" id="panel-hero">
+  <img class="hero-img" src="images/hero.jpg" alt="Lucie Neouze SS 27">
   <div class="hero-left">
-    <img id="heroLogo" class="hero-logo-big" src="logo.svg" alt="Lucie Neouze">
+    <img class="hero-logo-big" src="logo.svg" alt="Lucie Neouze">
     <div class="hero-meta">
       <div class="hero-season">SS — 27 / Paris / Womenswear</div>
       <div class="hero-rule"></div>
       <div class="hero-sub">Spring · Summer</div>
     </div>
   </div>
-</section>
-
-<!-- ─── SÉPARATEUR Hero → Édito 1 ─── -->
-<div class="sep">
-  <div class="sep-line"></div>
-  <div class="sep-label">Éditorial</div>
-  <div class="sep-line"></div>
+  <div class="scroll-hint">
+    <div class="scroll-hint-lbl">Scroll</div>
+    <div class="scroll-hint-line"></div>
+  </div>
 </div>
 
-<!-- ─── ÉDITORIAL 1 — FULL COVER ─── -->
-<section class="ed-full">
-  <img class="ed-full-img" src="images/editorial1-new.jpg" alt="Lucie Neouze SS 27 — Éditorial">
-  <div class="ed-full-vig"></div>
-  <div class="ed-full-caption">
-    <div class="ed-full-quote">La ligne<br>comme<br>architecture<br>du corps.</div>
-    <div class="ed-full-kicker">
+<!-- ─── PANEL 1 : ÉDITO 1 ─── -->
+<div class="panel" id="panel-edito1">
+  <img class="edito1-img" src="images/edito111.jpg" alt="Éditorial">
+  <div class="edito1-vig"></div>
+  <div class="edito1-caption">
+    <div class="edito1-quote">La ligne<br>comme<br>architecture<br>du corps.</div>
+    <div class="edito1-kicker">
       <span>Lucie Neouze — Paris</span>
       <span>SS 27 — Womenswear</span>
     </div>
   </div>
-</section>
-
-<!-- ─── SÉPARATEUR Édito 1 → Édito 2 ─── -->
-<div class="sep">
-  <div class="sep-line"></div>
-  <div class="sep-label">Spring · Summer 2027</div>
-  <div class="sep-line"></div>
+  <div class="section-num">01 / Éditorial</div>
 </div>
 
-<!-- ─── ÉDITORIAL 2 — AVANT FOOTER ─── -->
-<section class="ed-bottom">
-  <div class="ed-bottom-img-wrap">
-    <img class="ed-bottom-img" src="images/editorial-batch43.jpg" alt="Lucie Neouze SS 27">
+<!-- ─── PANEL 2 : ÉDITO 2 ─── -->
+<div class="panel" id="panel-edito2">
+  <img class="edito2-img" src="images/edito2finisher.jpg" alt="Éditorial">
+  <div class="edito2-vig"></div>
+  <div class="edito2-bar">
+    <div class="edito2-bar-line"></div>
+    <div class="edito2-caption">
+      <div class="edito2-title">Silhouette d'été</div>
+      <div class="edito2-meta">SS 27 — Paris</div>
+    </div>
   </div>
-  <div class="ed-bottom-caption">
-    <div class="ed-bottom-title">Silhouette d'été</div>
-    <div class="ed-bottom-meta">SS 27 — Paris</div>
-  </div>
-</section>
+  <div class="section-num">02 / Éditorial</div>
+</div>
 
-<!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-left">© 2027 Lucie Neouze — Tous droits réservés &nbsp;<em class="sovr"><a href="https://sovr.fr" target="_blank" rel="noopener">powered by SOVR.FR</a></em></div>
-  <div class="footer-logo">
-    <img src="logo.svg" alt="Lucie Neouze">
+<!-- ─── CONTENU NORMAL ─── -->
+<div class="site-content">
+  <div class="cta-block">
+    <div>
+      <div class="cta-rule"></div>
+      <h2 class="cta-title">SS 27<br>Womenswear</h2>
+    </div>
+    <a href="#" class="cta-btn">Voir la collection</a>
   </div>
-  <div class="footer-right">
-    <a class="footer-link" href="#">Instagram</a>
-    <a class="footer-link" href="#">Showroom</a>
-    <a class="footer-link" href="#">Contact</a>
-  </div>
-</footer>
+
+  <footer>
+    <div class="footer-left">© 2027 Lucie Neouze — Tous droits réservés &nbsp;<em class="sovr"><a href="https://sovr.fr" target="_blank" rel="noopener">powered by SOVR.FR</a></em></div>
+    <div class="footer-logo"><img src="logo.svg" alt="Lucie Neouze"></div>
+    <div class="footer-right">
+      <a class="footer-link" href="#">Instagram</a>
+      <a class="footer-link" href="#">Showroom</a>
+      <a class="footer-link" href="#">Contact</a>
+    </div>
+  </footer>
+</div>
 
 <script>
+/* ─── Mega menu ─────────────────────────────────────────────── */
+var megaMenu  = document.getElementById('megaMenu');
+var megaTimer;
+function openMega()       { clearTimeout(megaTimer); megaMenu.classList.add('open'); }
+function closeMegaDelay() { megaTimer = setTimeout(function(){ megaMenu.classList.remove('open'); }, 150); }
+
+/* ─── Scroll-jacking ────────────────────────────────────────── */
 (function(){
-  var nav        = document.getElementById('nav');
-  var navLogo    = document.getElementById('navLogoWrap');
-  var heroLogo   = document.getElementById('heroLogo');
-  var burger     = document.getElementById('burger');
-  var overlay    = document.getElementById('menuOverlay');
-  var cats       = document.querySelectorAll('.menu-cat');
-  var panels     = document.querySelectorAll('.sub-panel');
-  var menuOpen   = false;
-  var activeIdx  = -1;
+  var SLIDE_MS = 1100;
+  var TOTAL    = 2;
+  var current  = 0;
+  var animating = false;
 
-  /* ── SCROLL: logo dock ── */
-  function onScroll(){
-    if(menuOpen) return;
-    var y = window.scrollY;
-    nav.classList.toggle('scrolled', y > 60);
-    if(heroLogo){
-      var rect = heroLogo.getBoundingClientRect();
-      var navH = nav.offsetHeight;
-      var logoH = heroLogo.offsetHeight || 60;
-      var prog = Math.max(0, Math.min(1, (navH - rect.bottom) / logoH + 0.5));
-      heroLogo.style.opacity = 1 - prog;
-      navLogo.classList.toggle('visible', prog > 0.5);
+  var nav     = document.getElementById('nav');
+  var navLogo = document.getElementById('navLogoWrap');
+
+  var scrollPanels = [null,
+    document.getElementById('panel-edito1'),
+    document.getElementById('panel-edito2')
+  ];
+
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+
+  function goTo(next) {
+    if (animating) return;
+    if (next < 0 || next > TOTAL) return;
+    animating = true;
+    var prev = current;
+    current  = next;
+
+    if (next > prev) {
+      var t = scrollPanels[next];
+      if (t) { t.style.transition = 'transform '+SLIDE_MS+'ms cubic-bezier(.76,0,.24,1)'; t.style.transform = 'translateY(0)'; }
+    } else {
+      var t = scrollPanels[prev];
+      if (t) { t.style.transition = 'transform '+SLIDE_MS+'ms cubic-bezier(.76,0,.24,1)'; t.style.transform = 'translateY(100%)'; }
     }
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
 
-  /* ── MENU open / close ── */
-  function openMenu(){
-    menuOpen = true;
-    burger.classList.add('open');
-    overlay.classList.add('open');
-    overlay.setAttribute('aria-hidden','false');
-    nav.classList.add('menu-open');
-    nav.classList.remove('scrolled');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMenu(){
-    menuOpen = false;
-    burger.classList.remove('open');
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden','true');
-    nav.classList.remove('menu-open');
-    document.body.style.overflow = '';
-    /* reset hover state */
-    cats.forEach(function(c){ c.classList.remove('is-active'); });
-    panels.forEach(function(p){ p.classList.remove('is-active'); });
-    activeIdx = -1;
-    onScroll();
+    navLogo.classList.toggle('visible', next > 0);
+    nav.classList.toggle('on-dark', next > 0);
+
+    setTimeout(function() {
+      animating = false;
+      if (current === TOTAL) {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      } else {
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      }
+    }, SLIDE_MS + 80);
   }
 
-  burger.addEventListener('click', function(){ menuOpen ? closeMenu() : openMenu(); });
-  burger.addEventListener('keydown', function(e){
-    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); menuOpen ? closeMenu() : openMenu(); }
-  });
-  document.addEventListener('keydown', function(e){
-    if(e.key==='Escape' && menuOpen) closeMenu();
-  });
+  function onWheel(e) {
+    if (megaMenu.classList.contains('open')) return;
+    if (current === TOTAL && e.deltaY < 0 && window.scrollY === 0) {
+      e.preventDefault();
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      goTo(TOTAL - 1);
+      return;
+    }
+    if (current >= TOTAL) return;
+    e.preventDefault();
+    if (e.deltaY > 2)  goTo(current + 1);
+    if (e.deltaY < -2) goTo(current - 1);
+  }
 
-  /* ── CATEGORY HOVER → sous-section ── */
-  cats.forEach(function(cat){
-    cat.addEventListener('mouseenter', function(){
-      var idx = parseInt(cat.getAttribute('data-idx'), 10);
-      if(idx === activeIdx) return;
-      activeIdx = idx;
-      cats.forEach(function(c){ c.classList.remove('is-active'); });
-      panels.forEach(function(p){ p.classList.remove('is-active'); });
-      cat.classList.add('is-active');
-      var panel = overlay.querySelector('.sub-panel[data-idx="'+idx+'"]');
-      if(panel) panel.classList.add('is-active');
-    });
-  });
+  function onKey(e) {
+    if (megaMenu.classList.contains('open')) return;
+    if (current >= TOTAL && e.key !== 'ArrowUp') return;
+    if ([' ','ArrowDown','PageDown'].indexOf(e.key) !== -1) { e.preventDefault(); goTo(current + 1); }
+    if (['ArrowUp','PageUp'].indexOf(e.key) !== -1)         { e.preventDefault(); goTo(current - 1); }
+  }
 
-  /* close when clicking a season link */
-  overlay.querySelectorAll('.sub-season-lnk').forEach(function(lnk){
-    lnk.addEventListener('click', function(){ closeMenu(); });
-  });
+  var touchY0 = 0;
+  function onTouchStart(e) { touchY0 = e.touches[0].clientY; }
+  function onTouchEnd(e) {
+    if (megaMenu.classList.contains('open')) return;
+    var dy = touchY0 - e.changedTouches[0].clientY;
+    if (Math.abs(dy) < 30) return;
+    if (dy > 0 && current < TOTAL) goTo(current + 1);
+    if (dy < 0 && current > 0)     goTo(current - 1);
+  }
+
+  window.addEventListener('wheel',      onWheel,      { passive: false });
+  window.addEventListener('keydown',    onKey);
+  window.addEventListener('touchstart', onTouchStart, { passive: true });
+  window.addEventListener('touchend',   onTouchEnd,   { passive: true });
+
+  window.addEventListener('scroll', function() {
+    if (current < TOTAL) return;
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
 
 })();
 </script>
